@@ -1,5 +1,5 @@
 --=========================================================
--- ZZZZ HUB 6 took 40 hours :D - OPTIMIZED VERSION FULLY AI
+-- ZZZZ HUB 6 took 40 hours :D - OPTIMIZED VERSION
 --=========================================================
 
 -- Anti-Skid Protection & Obfuscation (Optimized)
@@ -7189,3 +7189,4 @@ task.wait(0.5) -- Small delay to ensure everything is loaded
 pcall(function()
 _G.saveUIState()
 end)
+
