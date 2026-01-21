@@ -1,0 +1,461 @@
+Bestsab joiner source
+-- [[ TIGY + BESTSAB JOINER: PREMIUM FIX V5 ]] --
+-- Fixed Teleport, UI Overflow, Notification Bugs & Mobile Toggle
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TeleportService = game:GetService("TeleportService")
+local HttpService = game:GetService("HttpService")
+local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local CoreGui = game:GetService("CoreGui")
+local UserInputService = game:GetService("UserInputService")
+
+local Player = Players.LocalPlayer
+
+--------------------------------------------------------------------------------
+-- CONFIGURATION & SAVING
+--------------------------------------------------------------------------------
+local BACKEND_URL = "https://xaf951x.pythonanywhere.com/get-spawns"
+local ANIMAL_FOLDER_PATH = ReplicatedStorage:WaitForChild("Models"):WaitForChild("Animals")
+local APP_NAME = "Tigy + BestSab Joiner"
+local SAVE_FILE = "BestSab_Config.json"
+
+local SELECTED_ANIMALS = {} 
+local SEARCH_ACTIVE = false
+local VISITED_JOBS = {} 
+
+local http_request = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+
+-- Save/Load System
+local function SaveConfig()
+    if writefile then
+        pcall(function() writefile(SAVE_FILE, HttpService:JSONEncode(SELECTED_ANIMALS)) end)
+    end
+end
+
+local function LoadConfig()
+    if readfile and isfile and isfile(SAVE_FILE) then
+        pcall(function()
+            local data = HttpService:JSONDecode(readfile(SAVE_FILE))
+            if type(data) == "table" then SELECTED_ANIMALS = data end
+        end)
+    end
+end
+LoadConfig()
+
+--------------------------------------------------------------------------------
+-- UI CONSTRUCTION
+--------------------------------------------------------------------------------
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "BestSabJoiner_FinalV5"
+ScreenGui.ResetOnSpawn = false
+if pcall(function() ScreenGui.Parent = CoreGui end) then else ScreenGui.Parent = Player.PlayerGui end
+
+-- 1. NOTIFICATION TOAST (Redesigned & Wider)
+local NotifFrame = Instance.new("Frame")
+NotifFrame.Name = "NotifFrame"
+NotifFrame.Size = UDim2.new(0, 360, 0, 70) -- Wider to fit text
+NotifFrame.Position = UDim2.new(0.5, -180, 0, -100) -- Hidden above screen
+NotifFrame.BackgroundColor3 = Color3.fromRGB(18, 18, 24)
+NotifFrame.BorderSizePixel = 0
+NotifFrame.Parent = ScreenGui
+Instance.new("UICorner", NotifFrame).CornerRadius = UDim.new(0, 10)
+local NotifStroke = Instance.new("UIStroke", NotifFrame)
+NotifStroke.Color = Color3.fromRGB(0, 255, 128)
+NotifStroke.Thickness = 1.5
+
+local NotifView = Instance.new("ViewportFrame", NotifFrame)
+NotifView.Size = UDim2.new(0, 60, 0, 60)
+NotifView.Position = UDim2.new(0, 10, 0.5, -30)
+NotifView.BackgroundTransparency = 1
+NotifView.Ambient = Color3.fromRGB(200, 200, 200)
+NotifView.LightColor = Color3.fromRGB(255, 255, 255)
+local NotifCam = Instance.new("Camera", NotifView)
+NotifView.CurrentCamera = NotifCam
+
+local NotifTextContainer = Instance.new("Frame", NotifFrame)
+NotifTextContainer.BackgroundTransparency = 1
+NotifTextContainer.Position = UDim2.new(0, 80, 0, 0)
+NotifTextContainer.Size = UDim2.new(1, -90, 1, 0)
+
+local NotifTitle = Instance.new("TextLabel", NotifTextContainer)
+NotifTitle.Size = UDim2.new(1, 0, 0.4, 0)
+NotifTitle.Position = UDim2.new(0, 0, 0.15, 0)
+NotifTitle.BackgroundTransparency = 1
+NotifTitle.Text = "ANIMAL FOUND!"
+NotifTitle.Font = Enum.Font.GothamBlack
+NotifTitle.TextSize = 14
+NotifTitle.TextColor3 = Color3.fromRGB(0, 255, 128)
+NotifTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+local NotifName = Instance.new("TextLabel", NotifTextContainer)
+NotifName.Size = UDim2.new(1, 0, 0.4, 0)
+NotifName.Position = UDim2.new(0, 0, 0.5, 0)
+NotifName.BackgroundTransparency = 1
+NotifName.Text = "Target Name"
+NotifName.Font = Enum.Font.GothamBold
+NotifName.TextScaled = true -- Ensures text stays inside
+NotifName.TextColor3 = Color3.fromRGB(255, 255, 255)
+NotifName.TextXAlignment = Enum.TextXAlignment.Left
+
+-- 2. MINI OPEN BUTTON (Sleek)
+local OpenBtn = Instance.new("TextButton", ScreenGui)
+OpenBtn.Size = UDim2.new(0, 80, 0, 35)
+OpenBtn.Position = UDim2.new(0, 10, 0.5, 0)
+OpenBtn.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+OpenBtn.Text = "OPEN UI"
+OpenBtn.Font = Enum.Font.GothamBold
+OpenBtn.TextColor3 = Color3.fromRGB(0, 255, 128)
+OpenBtn.TextSize = 12
+OpenBtn.Visible = false
+Instance.new("UICorner", OpenBtn).CornerRadius = UDim.new(0, 8)
+Instance.new("UIStroke", OpenBtn).Color = Color3.fromRGB(0, 255, 128)
+Instance.new("UIStroke", OpenBtn).Thickness = 1
+
+-- 3. MAIN WINDOW
+local MainFrame = Instance.new("Frame", ScreenGui)
+MainFrame.Size = UDim2.new(0, 500, 0, 380)
+MainFrame.Position = UDim2.new(0.5, -250, 0.5, -190)
+MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 12)
+Instance.new("UIStroke", MainFrame).Color = Color3.fromRGB(40,40,40)
+
+-- Top Bar
+local TopBar = Instance.new("Frame", MainFrame)
+TopBar.Size = UDim2.new(1, 0, 0, 40)
+TopBar.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+Instance.new("UICorner", TopBar).CornerRadius = UDim.new(0, 12)
+local Filler = Instance.new("Frame", TopBar) -- Hides bottom rounded corners
+Filler.Size = UDim2.new(1, 0, 0, 10)
+Filler.Position = UDim2.new(0, 0, 1, -10)
+Filler.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+Filler.BorderSizePixel = 0
+
+local TitleLbl = Instance.new("TextLabel", TopBar)
+TitleLbl.Text = APP_NAME
+TitleLbl.Font = Enum.Font.GothamBold
+TitleLbl.TextSize = 16
+TitleLbl.TextColor3 = Color3.new(1,1,1)
+TitleLbl.Size = UDim2.new(1, -50, 1, 0)
+TitleLbl.Position = UDim2.new(0, 15, 0, 0)
+TitleLbl.BackgroundTransparency = 1
+TitleLbl.TextXAlignment = Enum.TextXAlignment.Left
+
+local CloseBtn = Instance.new("TextButton", TopBar)
+CloseBtn.Size = UDim2.new(0, 40, 0, 40)
+CloseBtn.Position = UDim2.new(1, -40, 0, 0)
+CloseBtn.BackgroundTransparency = 1
+CloseBtn.Text = "×"
+CloseBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+CloseBtn.TextSize = 24
+CloseBtn.Font = Enum.Font.Gotham
+
+-- Tabs
+local TabHolder = Instance.new("Frame", MainFrame)
+TabHolder.Size = UDim2.new(1, -20, 0, 30)
+TabHolder.Position = UDim2.new(0, 10, 1, -80)
+TabHolder.BackgroundTransparency = 1
+local TabList = Instance.new("UIListLayout", TabHolder)
+TabList.FillDirection = Enum.FillDirection.Horizontal
+TabList.Padding = UDim.new(0, 10)
+
+local function CreateTab(text)
+    local btn = Instance.new("TextButton", TabHolder)
+    btn.Size = UDim2.new(0.5, -5, 1, 0)
+    btn.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+    btn.Text = text
+    btn.TextColor3 = Color3.new(1,1,1)
+    btn.Font = Enum.Font.GothamBold
+    btn.TextSize = 12
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
+    return btn
+end
+local ScanTab = CreateTab("Scanner")
+local HistoryTab = CreateTab("Found Brainrots")
+ScanTab.BackgroundColor3 = Color3.fromRGB(0, 255, 128)
+ScanTab.TextColor3 = Color3.new(0,0,0)
+
+-- Pages
+local Content = Instance.new("Frame", MainFrame)
+Content.Size = UDim2.new(1, -20, 1, -100)
+Content.Position = UDim2.new(0, 10, 0, 50)
+Content.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+Instance.new("UICorner", Content).CornerRadius = UDim.new(0, 8)
+
+local ScanPage = Instance.new("ScrollingFrame", Content)
+ScanPage.Size = UDim2.new(1, -10, 1, -10)
+ScanPage.Position = UDim2.new(0, 5, 0, 5)
+ScanPage.BackgroundTransparency = 1
+ScanPage.ScrollBarThickness = 2
+local Grid = Instance.new("UIGridLayout", ScanPage)
+Grid.CellSize = UDim2.new(0, 95, 0, 95)
+Grid.CellPadding = UDim2.new(0, 8, 0, 8)
+
+local HistoryPage = Instance.new("ScrollingFrame", Content)
+HistoryPage.Size = UDim2.new(1, -10, 1, -10)
+HistoryPage.Position = UDim2.new(0, 5, 0, 5)
+HistoryPage.BackgroundTransparency = 1
+HistoryPage.Visible = false
+local HistoryList = Instance.new("UIListLayout", HistoryPage)
+HistoryList.Padding = UDim.new(0, 5)
+
+-- Main Button
+local ActionBtn = Instance.new("TextButton", MainFrame)
+ActionBtn.Size = UDim2.new(1, -20, 0, 40)
+ActionBtn.Position = UDim2.new(0, 10, 1, -45)
+ActionBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+ActionBtn.Text = "SELECT ANIMALS"
+ActionBtn.TextColor3 = Color3.fromRGB(150, 150, 150)
+ActionBtn.Font = Enum.Font.GothamBold
+ActionBtn.TextSize = 14
+Instance.new("UICorner", ActionBtn).CornerRadius = UDim.new(0, 8)
+
+--------------------------------------------------------------------------------
+-- LOGIC & FUNCTIONS
+--------------------------------------------------------------------------------
+local dragging, dragStart, startPos
+TopBar.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true; dragStart = input.Position; startPos = MainFrame.Position
+    end
+end)
+TopBar.InputEnded:Connect(function(input) if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then dragging = false end end)
+UserInputService.InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        local delta = input.Position - dragStart
+        MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+local function ToggleUI(state)
+    MainFrame.Visible = state
+    OpenBtn.Visible = not state
+end
+CloseBtn.MouseButton1Click:Connect(function() ToggleUI(false) end)
+OpenBtn.MouseButton1Click:Connect(function() ToggleUI(true) end)
+
+ScanTab.MouseButton1Click:Connect(function()
+    ScanPage.Visible = true; HistoryPage.Visible = false
+    ScanTab.BackgroundColor3 = Color3.fromRGB(0, 255, 128); ScanTab.TextColor3 = Color3.new(0,0,0)
+    HistoryTab.BackgroundColor3 = Color3.fromRGB(30, 30, 35); HistoryTab.TextColor3 = Color3.new(1,1,1)
+end)
+HistoryTab.MouseButton1Click:Connect(function()
+    ScanPage.Visible = false; HistoryPage.Visible = true
+    HistoryTab.BackgroundColor3 = Color3.fromRGB(0, 255, 128); HistoryTab.TextColor3 = Color3.new(0,0,0)
+    ScanTab.BackgroundColor3 = Color3.fromRGB(30, 30, 35); ScanTab.TextColor3 = Color3.new(1,1,1)
+end)
+
+-- Viewport Setup
+local function SetupViewport(model, parent)
+    local vp = Instance.new("ViewportFrame", parent)
+    vp.Size = UDim2.new(1, 0, 1, -20)
+    vp.BackgroundTransparency = 1
+    vp.Ambient = Color3.fromRGB(200, 200, 200)
+    vp.LightColor = Color3.fromRGB(255, 255, 255)
+    
+    local cam = Instance.new("Camera", vp)
+    vp.CurrentCamera = cam
+    local disp = model:Clone()
+    disp.Parent = vp
+    
+    local cf, size = disp:GetBoundingBox()
+    local maxDim = math.max(size.X, size.Y, size.Z)
+    local dist = maxDim * 1.25 -- Slightly zoomed out to fit better
+    cam.CFrame = CFrame.lookAt(cf.Position + Vector3.new(dist, dist*0.6, dist), cf.Position)
+    
+    task.spawn(function()
+        while disp.Parent do
+            if disp.PrimaryPart then
+                disp:SetPrimaryPartCFrame(disp:GetPrimaryPartCFrame() * CFrame.Angles(0, 0.02, 0))
+            end
+            task.wait(0.016)
+        end
+    end)
+end
+
+-- Teleport Logic
+local function PerformTeleport(jobId)
+    -- HIDE UI IMMEDIATELY
+    NotifFrame:TweenPosition(UDim2.new(0.5, -180, 0, -100), "In", "Quad", 0.3)
+    ActionBtn.Text = "TELEPORTING..."
+    
+    -- RAW TELEPORT (As requested)
+    TeleportService:TeleportToPlaceInstance(game.PlaceId, jobId, Player)
+end
+
+-- Teleport Failure Listener (Handles Error 771 gracefully in UI)
+TeleportService.TeleportInitFailed:Connect(function(player, result, errorMessage)
+    if player == Player then
+        warn("Teleport Failed: " .. errorMessage)
+        ActionBtn.Text = "FAILED: " .. errorMessage
+        ActionBtn.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+        ActionBtn.TextColor3 = Color3.new(1,1,1)
+        
+        -- Reset UI
+        task.wait(2)
+        SEARCH_ACTIVE = false
+        ActionBtn.Text = "START FINDING"
+        ActionBtn.BackgroundColor3 = Color3.fromRGB(0, 255, 128)
+        ActionBtn.TextColor3 = Color3.new(0,0,0)
+        
+        -- Ensure Notification is gone
+        NotifFrame:TweenPosition(UDim2.new(0.5, -180, 0, -100), "In", "Quad", 0.3)
+    end
+end)
+
+-- Add History Item
+local function AddHistory(name, jobId)
+    local frame = Instance.new("Frame", HistoryPage)
+    frame.Size = UDim2.new(1, 0, 0, 40)
+    frame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+    Instance.new("UICorner", frame)
+    
+    local lbl = Instance.new("TextLabel", frame)
+    lbl.Text = name
+    lbl.Size = UDim2.new(0, 120, 1, 0)
+    lbl.Position = UDim2.new(0, 10, 0, 0)
+    lbl.BackgroundTransparency = 1
+    lbl.TextColor3 = Color3.fromRGB(0, 255, 128)
+    lbl.Font = Enum.Font.GothamBold
+    lbl.TextXAlignment = Enum.TextXAlignment.Left
+    
+    local rtry = Instance.new("TextButton", frame)
+    rtry.Text = "RETRY JOIN"
+    rtry.Size = UDim2.new(0, 90, 0, 24)
+    rtry.Position = UDim2.new(1, -100, 0.5, -12)
+    rtry.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+    rtry.TextColor3 = Color3.new(1,1,1)
+    rtry.Font = Enum.Font.GothamBold
+    Instance.new("UICorner", rtry)
+    
+    rtry.MouseButton1Click:Connect(function() PerformTeleport(jobId) end)
+    HistoryPage.CanvasSize = UDim2.new(0, 0, 0, HistoryList.AbsoluteContentSize.Y + 20)
+end
+
+-- Loading
+local function LoadList()
+    local children = ANIMAL_FOLDER_PATH:GetChildren()
+    for _, item in ipairs(children) do
+        if item:IsA("Model") or item:IsA("BasePart") then
+            local name = item.Name
+            
+            local btn = Instance.new("TextButton", ScanPage)
+            btn.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+            btn.Text = ""
+            btn.AutoButtonColor = false
+            Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
+            local stroke = Instance.new("UIStroke", btn)
+            stroke.Color = Color3.fromRGB(0, 255, 128); stroke.Thickness = 2; stroke.Enabled = false
+            
+            local lbl = Instance.new("TextLabel", btn)
+            lbl.Text = name
+            lbl.Size = UDim2.new(1, -10, 0, 15)
+            lbl.Position = UDim2.new(0, 5, 1, -20)
+            lbl.BackgroundTransparency = 1
+            lbl.TextColor3 = Color3.new(1,1,1)
+            lbl.Font = Enum.Font.GothamBold
+            lbl.TextScaled = true -- Prevents text overflow
+            
+            SetupViewport(item, btn)
+            
+            if table.find(SELECTED_ANIMALS, name) then
+                stroke.Enabled = true
+                btn.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+            end
+            
+            btn.MouseButton1Click:Connect(function()
+                if table.find(SELECTED_ANIMALS, name) then
+                    for i,v in pairs(SELECTED_ANIMALS) do if v==name then table.remove(SELECTED_ANIMALS, i) end end
+                    stroke.Enabled = false
+                    TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(30,30,35)}):Play()
+                else
+                    table.insert(SELECTED_ANIMALS, name)
+                    stroke.Enabled = true
+                    TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(40,40,45)}):Play()
+                end
+                SaveConfig()
+                if #SELECTED_ANIMALS > 0 then
+                    ActionBtn.Text = "START FINDING (" .. #SELECTED_ANIMALS .. ")"
+                    ActionBtn.BackgroundColor3 = Color3.fromRGB(0, 255, 128)
+                    ActionBtn.TextColor3 = Color3.new(0,0,0)
+                else
+                    ActionBtn.Text = "SELECT ANIMALS"
+                    ActionBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+                    ActionBtn.TextColor3 = Color3.fromRGB(150, 150, 150)
+                end
+            end)
+        end
+    end
+    if #SELECTED_ANIMALS > 0 then
+        ActionBtn.Text = "START FINDING (" .. #SELECTED_ANIMALS .. ")"
+        ActionBtn.BackgroundColor3 = Color3.fromRGB(0, 255, 128)
+        ActionBtn.TextColor3 = Color3.new(0,0,0)
+    end
+    ScanPage.CanvasSize = UDim2.new(0, 0, 0, math.ceil(#children/4) * 105 + 20)
+end
+
+LoadList()
+
+-- Main Loop
+task.spawn(function()
+    while true do
+        if SEARCH_ACTIVE and #SELECTED_ANIMALS > 0 then
+            ActionBtn.Text = "SCANNING..."
+            local success, result = pcall(function() return http_request({ Url = BACKEND_URL, Method = "GET" }) end)
+            if success and result.StatusCode == 200 then
+                local data = HttpService:JSONDecode(result.Body)
+                for _, target in pairs(SELECTED_ANIMALS) do
+                    local entry = data[target]
+                    if entry and entry.jobId and entry.jobId ~= game.JobId and not VISITED_JOBS[entry.jobId] then
+                        
+                        -- FOUND!
+                        SEARCH_ACTIVE = false
+                        VISITED_JOBS[entry.jobId] = true
+                        AddHistory(target, entry.jobId)
+                        
+                        -- Show Notification
+                        NotifName.Text = target
+                        NotifView:ClearAllChildren()
+                        local cam = Instance.new("Camera", NotifView); NotifView.CurrentCamera = cam
+                        local model = ANIMAL_FOLDER_PATH:FindFirstChild(target)
+                        if model then
+                            local disp = model:Clone(); disp.Parent = NotifView
+                            local cf, size = disp:GetBoundingBox()
+                            local dist = math.max(size.X, size.Y, size.Z) * 1.3
+                            cam.CFrame = CFrame.lookAt(cf.Position + Vector3.new(dist, dist*0.5, dist), cf.Position)
+                            task.spawn(function()
+                                while disp.Parent do
+                                    if disp.PrimaryPart then disp:SetPrimaryPartCFrame(disp:GetPrimaryPartCFrame() * CFrame.Angles(0,0.05,0)) end
+                                    task.wait(0.016)
+                                end
+                            end)
+                        end
+                        
+                        NotifFrame:TweenPosition(UDim2.new(0.5, -180, 0, 50), "Out", "Back", 0.5)
+                        
+                        task.wait(2) -- Wait for user to see it
+                        
+                        PerformTeleport(entry.jobId)
+                        break
+                    end
+                end
+            end
+        end
+        task.wait(3)
+    end
+end)
+
+ActionBtn.MouseButton1Click:Connect(function()
+    if #SELECTED_ANIMALS == 0 then return end
+    SEARCH_ACTIVE = not SEARCH_ACTIVE
+    if SEARCH_ACTIVE then
+        ActionBtn.Text = "STOP"
+        ActionBtn.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+        ActionBtn.TextColor3 = Color3.new(1,1,1)
+    else
+        ActionBtn.Text = "START FINDING (" .. #SELECTED_ANIMALS .. ")"
+        ActionBtn.BackgroundColor3 = Color3.fromRGB(0, 255, 128)
+        ActionBtn.TextColor3 = Color3.new(0,0,0)
+    end
+end)
