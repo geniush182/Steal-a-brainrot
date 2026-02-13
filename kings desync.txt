@@ -1,0 +1,514 @@
+local l_LocalPlayer_0 = game:GetService("Players").LocalPlayer;
+
+print("Script loaded for:", l_LocalPlayer_0.Name);
+local l_Players_0 = game:GetService("Players");
+local l_RunService_0 = game:GetService("RunService");
+local l_UserInputService_0 = game:GetService("UserInputService");
+local l_LocalPlayer_1 = l_Players_0.LocalPlayer;
+local l_ScreenGui_0 = Instance.new("ScreenGui");
+local l_Frame_0 = Instance.new("Frame");
+local l_UICorner_0 = Instance.new("UICorner");
+local l_UIStroke_0 = Instance.new("UIStroke");
+local l_TextLabel_0 = Instance.new("TextLabel");
+local l_UITextSizeConstraint_0 = Instance.new("UITextSizeConstraint");
+local l_TextButton_0 = Instance.new("TextButton");
+local l_UICorner_1 = Instance.new("UICorner");
+local l_UIAspectRatioConstraint_0 = Instance.new("UIAspectRatioConstraint");
+local l_UITextSizeConstraint_1 = Instance.new("UITextSizeConstraint");
+local l_TextButton_1 = Instance.new("TextButton");
+local l_UICorner_2 = Instance.new("UICorner");
+local l_UIAspectRatioConstraint_1 = Instance.new("UIAspectRatioConstraint");
+local l_UITextSizeConstraint_2 = Instance.new("UITextSizeConstraint");
+local l_UIStroke_1 = Instance.new("UIStroke");
+local l_UIStroke_2 = Instance.new("UIStroke");
+local l_TextLabel_1 = Instance.new("TextLabel");
+local l_UITextSizeConstraint_3 = Instance.new("UITextSizeConstraint");
+local l_TextLabel_2 = Instance.new("TextLabel");
+local l_UITextSizeConstraint_4 = Instance.new("UITextSizeConstraint");
+local l_TextButton_2 = Instance.new("TextButton");
+local l_UICorner_3 = Instance.new("UICorner");
+local l_UIAspectRatioConstraint_2 = Instance.new("UIAspectRatioConstraint");
+local l_UITextSizeConstraint_5 = Instance.new("UITextSizeConstraint");
+local l_UIStroke_3 = Instance.new("UIStroke");
+local l_TextLabel_3 = Instance.new("TextLabel");
+local l_UITextSizeConstraint_6 = Instance.new("UITextSizeConstraint");
+local l_UIAspectRatioConstraint_3 = Instance.new("UIAspectRatioConstraint");
+l_ScreenGui_0.Parent = l_LocalPlayer_1:WaitForChild("PlayerGui");
+l_ScreenGui_0.ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
+l_ScreenGui_0.ResetOnSpawn = false;
+l_UIAspectRatioConstraint_3.Parent = l_ScreenGui_0;
+l_UIAspectRatioConstraint_3.AspectRatio = 2.02;
+l_Frame_0.Parent = l_ScreenGui_0;
+l_Frame_0.BackgroundColor3 = Color3.fromRGB(0, 0, 0);
+l_Frame_0.BorderColor3 = Color3.fromRGB(0, 0, 0);
+l_Frame_0.BorderSizePixel = 0;
+l_Frame_0.Position = UDim2.new(0, 372, 0, 172);
+l_Frame_0.Size = UDim2.new(0, 256, 0, 198);
+l_UICorner_0.Parent = l_Frame_0;
+l_UIStroke_0.Parent = l_Frame_0;
+l_UIStroke_0.ApplyStrokeMode = Enum.ApplyStrokeMode.Border;
+l_UIStroke_0.Color = Color3.fromRGB(255, 255, 255);
+l_UIStroke_0.Thickness = 2.5;
+l_TextLabel_0.Parent = l_Frame_0;
+l_TextLabel_0.BackgroundColor3 = Color3.fromRGB(255, 255, 255);
+l_TextLabel_0.BackgroundTransparency = 1;
+l_TextLabel_0.BorderColor3 = Color3.fromRGB(0, 0, 0);
+l_TextLabel_0.BorderSizePixel = 0;
+l_TextLabel_0.Position = UDim2.new(0, 9, 0, 9);
+l_TextLabel_0.Size = UDim2.new(0, 239, 0, 30);
+l_TextLabel_0.Font = Enum.Font.Gotham;
+l_TextLabel_0.Text = "💀 Kanye No Tool Desync 💀";
+l_TextLabel_0.TextColor3 = Color3.fromRGB(255, 255, 255);
+l_TextLabel_0.TextScaled = true;
+l_TextLabel_0.TextSize = 14;
+l_TextLabel_0.TextWrapped = true;
+l_UITextSizeConstraint_0.Parent = l_TextLabel_0;
+l_UITextSizeConstraint_0.MaxTextSize = 30;
+l_TextButton_0.Name = "ActivateBtn";
+l_TextButton_0.Parent = l_Frame_0;
+l_TextButton_0.BackgroundColor3 = Color3.fromRGB(0, 0, 0);
+l_TextButton_0.BorderColor3 = Color3.fromRGB(0, 0, 0);
+l_TextButton_0.BorderSizePixel = 0;
+l_TextButton_0.Position = UDim2.new(0, 35, 0, 50);
+l_TextButton_0.Size = UDim2.new(0, 186, 0, 35);
+l_TextButton_0.Font = Enum.Font.Gotham;
+l_TextButton_0.Text = "Activate";
+l_TextButton_0.TextColor3 = Color3.fromRGB(255, 255, 255);
+l_TextButton_0.TextScaled = true;
+l_TextButton_0.TextSize = 27;
+l_TextButton_0.TextWrapped = true;
+l_TextButton_0.AutoButtonColor = false;
+l_UICorner_1.CornerRadius = UDim.new(0, 4);
+l_UICorner_1.Parent = l_TextButton_0;
+l_UIAspectRatioConstraint_0.Parent = l_TextButton_0;
+l_UIAspectRatioConstraint_0.AspectRatio = 5.314;
+l_UITextSizeConstraint_1.Parent = l_TextButton_0;
+l_UITextSizeConstraint_1.MaxTextSize = 27;
+l_UIStroke_1.Parent = l_TextButton_0;
+l_UIStroke_1.ApplyStrokeMode = Enum.ApplyStrokeMode.Border;
+l_UIStroke_1.Color = Color3.fromRGB(255, 255, 255);
+l_UIStroke_1.Thickness = 2;
+l_TextButton_1.Name = "DesynceToggleBtn";
+l_TextButton_1.Parent = l_Frame_0;
+l_TextButton_1.BackgroundColor3 = Color3.fromRGB(0, 0, 0);
+l_TextButton_1.BorderColor3 = Color3.fromRGB(0, 0, 0);
+l_TextButton_1.BorderSizePixel = 0;
+l_TextButton_1.Position = UDim2.new(0, 35, 0, 100);
+l_TextButton_1.Size = UDim2.new(0, 186, 0, 35);
+l_TextButton_1.Font = Enum.Font.Gotham;
+l_TextButton_1.Text = "Desync";
+l_TextButton_1.TextColor3 = Color3.fromRGB(255, 255, 255);
+l_TextButton_1.TextScaled = true;
+l_TextButton_1.TextSize = 27;
+l_TextButton_1.TextWrapped = true;
+l_TextButton_1.AutoButtonColor = false;
+l_UICorner_2.CornerRadius = UDim.new(0, 4);
+l_UICorner_2.Parent = l_TextButton_1;
+l_UIAspectRatioConstraint_1.Parent = l_TextButton_1;
+l_UIAspectRatioConstraint_1.AspectRatio = 5.314;
+l_UITextSizeConstraint_2.Parent = l_TextButton_1;
+l_UITextSizeConstraint_2.MaxTextSize = 27;
+l_UIStroke_2.Parent = l_TextButton_1;
+l_UIStroke_2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border;
+l_UIStroke_2.Color = Color3.fromRGB(255, 255, 255);
+l_UIStroke_2.Thickness = 2;
+l_TextLabel_1.Name = "ActivateStatus";
+l_TextLabel_1.Parent = l_Frame_0;
+l_TextLabel_1.BackgroundColor3 = Color3.fromRGB(255, 255, 255);
+l_TextLabel_1.BackgroundTransparency = 1;
+l_TextLabel_1.BorderColor3 = Color3.fromRGB(0, 0, 0);
+l_TextLabel_1.BorderSizePixel = 0;
+l_TextLabel_1.Position = UDim2.new(0, 213, 0, 58);
+l_TextLabel_1.Size = UDim2.new(0, 50, 0, 19);
+l_TextLabel_1.Font = Enum.Font.Gotham;
+l_TextLabel_1.Text = "🔴";
+l_TextLabel_1.TextColor3 = Color3.fromRGB(255, 255, 255);
+l_TextLabel_1.TextScaled = true;
+l_TextLabel_1.TextSize = 14;
+l_TextLabel_1.TextWrapped = true;
+l_UITextSizeConstraint_3.Parent = l_TextLabel_1;
+l_UITextSizeConstraint_3.MaxTextSize = 30;
+l_TextLabel_2.Name = "DesynceStatus";
+l_TextLabel_2.Parent = l_Frame_0;
+l_TextLabel_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255);
+l_TextLabel_2.BackgroundTransparency = 1;
+l_TextLabel_2.BorderColor3 = Color3.fromRGB(0, 0, 0);
+l_TextLabel_2.BorderSizePixel = 0;
+l_TextLabel_2.Position = UDim2.new(0, 213, 0, 108);
+l_TextLabel_2.Size = UDim2.new(0, 50, 0, 19);
+l_TextLabel_2.Font = Enum.Font.Gotham;
+l_TextLabel_2.Text = "🔴";
+l_TextLabel_2.TextColor3 = Color3.fromRGB(255, 255, 255);
+l_TextLabel_2.TextScaled = true;
+l_TextLabel_2.TextSize = 14;
+l_TextLabel_2.TextWrapped = true;
+l_UITextSizeConstraint_4.Parent = l_TextLabel_2;
+l_UITextSizeConstraint_4.MaxTextSize = 30;
+l_TextButton_2.Name = "NoAnimBtn";
+l_TextButton_2.Parent = l_Frame_0;
+l_TextButton_2.BackgroundColor3 = Color3.fromRGB(0, 0, 0);
+l_TextButton_2.BorderColor3 = Color3.fromRGB(0, 0, 0);
+l_TextButton_2.BorderSizePixel = 0;
+l_TextButton_2.Position = UDim2.new(0, 35, 0, 150);
+l_TextButton_2.Size = UDim2.new(0, 186, 0, 35);
+l_TextButton_2.Font = Enum.Font.Gotham;
+l_TextButton_2.Text = "No Anim";
+l_TextButton_2.TextColor3 = Color3.fromRGB(255, 255, 255);
+l_TextButton_2.TextScaled = true;
+l_TextButton_2.TextSize = 27;
+l_TextButton_2.TextWrapped = true;
+l_TextButton_2.AutoButtonColor = false;
+l_UICorner_3.CornerRadius = UDim.new(0, 4);
+l_UICorner_3.Parent = l_TextButton_2;
+l_UIAspectRatioConstraint_2.Parent = l_TextButton_2;
+l_UIAspectRatioConstraint_2.AspectRatio = 5.314;
+l_UITextSizeConstraint_5.Parent = l_TextButton_2;
+l_UITextSizeConstraint_5.MaxTextSize = 27;
+l_UIStroke_3.Parent = l_TextButton_2;
+l_UIStroke_3.ApplyStrokeMode = Enum.ApplyStrokeMode.Border;
+l_UIStroke_3.Color = Color3.fromRGB(255, 255, 255);
+l_UIStroke_3.Thickness = 2;
+l_TextLabel_3.Name = "NoAnimStatus";
+l_TextLabel_3.Parent = l_Frame_0;
+l_TextLabel_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255);
+l_TextLabel_3.BackgroundTransparency = 1;
+l_TextLabel_3.BorderColor3 = Color3.fromRGB(0, 0, 0);
+l_TextLabel_3.BorderSizePixel = 0;
+l_TextLabel_3.Position = UDim2.new(0, 213, 0, 158);
+l_TextLabel_3.Size = UDim2.new(0, 50, 0, 19);
+l_TextLabel_3.Font = Enum.Font.Gotham;
+l_TextLabel_3.Text = "🔴";
+l_TextLabel_3.TextColor3 = Color3.fromRGB(255, 255, 255);
+l_TextLabel_3.TextScaled = true;
+l_TextLabel_3.TextSize = 14;
+l_TextLabel_3.TextWrapped = true;
+l_UITextSizeConstraint_6.Parent = l_TextLabel_3;
+l_UITextSizeConstraint_6.MaxTextSize = 30;
+local v37 = false;
+local v38 = nil;
+local v39 = nil;
+local l_Position_0 = l_Frame_0.Position;
+l_Frame_0.InputBegan:Connect(function(v41)
+    if v41.UserInputType == Enum.UserInputType.MouseButton1 or v41.UserInputType == Enum.UserInputType.Touch then
+        v37 = true;
+        v38 = v41.Position;
+        v39 = l_Frame_0.Position;
+    end;
+end);
+l_UserInputService_0.InputEnded:Connect(function(v42)
+    if v42.UserInputType == Enum.UserInputType.MouseButton1 or v42.UserInputType == Enum.UserInputType.Touch then
+        v37 = false;
+    end;
+end);
+l_UserInputService_0.InputChanged:Connect(function(v43)
+    if v37 and (v43.UserInputType == Enum.UserInputType.MouseMovement or v43.UserInputType == Enum.UserInputType.Touch) then
+        local v44 = v43.Position - v38;
+        l_Position_0 = UDim2.new(v39.X.Scale, v39.X.Offset + v44.X, v39.Y.Scale, v39.Y.Offset + v44.Y);
+    end;
+end);
+l_RunService_0.RenderStepped:Connect(function()
+    l_Frame_0.Position = l_Frame_0.Position:Lerp(l_Position_0, 0.18);
+end);
+local v45 = false;
+local v46 = {};
+local v47 = false;
+local function v53()
+    local l_Character_0 = l_LocalPlayer_1.Character;
+    if not l_Character_0 then
+        return;
+    else
+        local l_HumanoidRootPart_0 = l_Character_0:FindFirstChild("HumanoidRootPart");
+        if not l_HumanoidRootPart_0 then
+            return;
+        else
+            for _, v51 in ipairs({
+                {"GameNetPVHeaderRotationalVelocityZeroCutoffExponent", "-5000"}, 
+                {"LargeReplicatorWrite5", "true"}, 
+                {"LargeReplicatorEnabled9", "true"}, 
+                {"AngularVelociryLimit", "360"}, 
+                {"TimestepArbiterVelocityCriteriaThresholdTwoDt", "2147483646"}, 
+                {"S2PhysicsSenderRate", "15000"}, 
+                {"DisableDPIScale", "true"}, 
+                {"MaxDataPacketPerSend", "2147483647"}, 
+                {"ServerMaxBandwith", "52"}, 
+                {"PhysicsSenderMaxBandwidthBps", "20000"}, 
+                {"MaxTimestepMultiplierBuoyancy", "2147483647"}, 
+                {"SimOwnedNOUCountThresholdMillionth", "2147483647"}, 
+                {"MaxMissedWorldStepsRemembered", "-2147483648"}, 
+                {"CheckPVDifferencesForInterpolationMinVelThresholdStudsPerSecHundredth", "1"}, 
+                {"StreamJobNOUVolumeLengthCap", "2147483647"}, 
+                {"DebugSendDistInSteps", "-2147483648"}, 
+                {"MaxTimestepMultiplierAcceleration", "2147483647"}, 
+                {"LargeReplicatorRead5", "true"}, 
+                {"SimExplicitlyCappedTimestepMultiplier", "2147483646"}, 
+                {"GameNetDontSendRedundantNumTimes", "1"}, 
+                {"CheckPVLinearVelocityIntegrateVsDeltaPositionThresholdPercent", "1"}, 
+                {"CheckPVCachedRotVelThresholdPercent", "10"}, 
+                {"LargeReplicatorSerializeRead3", "true"}, 
+                {"ReplicationFocusNouExtentsSizeCutoffForPauseStuds", "2147483647"}, 
+                {"NextGenReplicatorEnabledWrite4", "true"}, 
+                {"CheckPVDifferencesForInterpolationMinRotVelThresholdRadsPerSecHundredth", "1"}, 
+                {"GameNetDontSendRedundantDeltaPositionMillionth", "1"}, 
+                {"InterpolationFrameVelocityThresholdMillionth", "5"}, 
+                {"StreamJobNOUVolumeCap", "2147483647"}, 
+                {"InterpolationFrameRotVelocityThresholdMillionth", "5"}, 
+                {"WorldStepMax", "30"}, 
+                {"TimestepArbiterHumanoidLinearVelThreshold", "1"}, 
+                {"InterpolationFramePositionThresholdMillionth", "5"}, 
+                {"TimestepArbiterHumanoidTurningVelThreshold", "1"}, 
+                {"MaxTimestepMultiplierContstraint", "2147483647"}, 
+                {"GameNetPVHeaderLinearVelocityZeroCutoffExponent", "-5000"}, 
+                {"CheckPVCachedVelThresholdPercent", "10"}, 
+                {"TimestepArbiterOmegaThou", "1073741823"}, 
+                {"MaxAcceptableUpdateDelay", "1"}, 
+                {"LargeReplicatorSerializeWrite4", "true"}
+            }) do
+                pcall(function()
+                    setfflag(v51[1], v51[2]);
+                    v46[v51[1]] = v51[2];
+                end);
+            end;
+            local l_Humanoid_0 = l_Character_0:FindFirstChildWhichIsA("Humanoid");
+            if l_Humanoid_0 then
+                l_Humanoid_0:ChangeState(Enum.HumanoidStateType.Jumping);
+                task.wait(0.1);
+                l_Humanoid_0:ChangeState(Enum.HumanoidStateType.Landed);
+            end;
+            pcall(function()
+                l_HumanoidRootPart_0:SetNetworkOwner(nil);
+                task.wait(0.05);
+                l_HumanoidRootPart_0:SetNetworkOwner(l_LocalPlayer_1);
+            end);
+            return;
+        end;
+    end;
+end;
+local function v57()
+    local l_Character_1 = l_LocalPlayer_1.Character;
+    if not l_Character_1 then
+        return;
+    elseif not l_Character_1:FindFirstChild("HumanoidRootPart") then
+        return;
+    else
+        for _, v56 in ipairs({
+            {"GameNetPVHeaderRotationalVelocityZeroCutoffExponent", "-5000"}, 
+            {"LargeReplicatorWrite5", "true"}, 
+            {"LargeReplicatorEnabled9", "true"}, 
+            {"AngularVelociryLimit", "360"}, 
+            {"TimestepArbiterVelocityCriteriaThresholdTwoDt", "2147483646"}, 
+            {"S2PhysicsSenderRate", "15000"}, 
+            {"DisableDPIScale", "true"}, 
+            {"MaxDataPacketPerSend", "2147483647"}, 
+            {"ServerMaxBandwith", "52"}, 
+            {"PhysicsSenderMaxBandwidthBps", "20000"}, 
+            {"MaxTimestepMultiplierBuoyancy", "2147483647"}, 
+            {"SimOwnedNOUCountThresholdMillionth", "2147483647"}, 
+            {"MaxMissedWorldStepsRemembered", "-2147483648"}, 
+            {"CheckPVDifferencesForInterpolationMinVelThresholdStudsPerSecHundredth", "1"}, 
+            {"StreamJobNOUVolumeLengthCap", "2147483647"}, 
+            {"DebugSendDistInSteps", "-2147483648"}, 
+            {"MaxTimestepMultiplierAcceleration", "2147483647"}, 
+            {"LargeReplicatorRead5", "true"}, 
+            {"SimExplicitlyCappedTimestepMultiplier", "2147483646"}, 
+            {"GameNetDontSendRedundantNumTimes", "1"}, 
+            {"CheckPVLinearVelocityIntegrateVsDeltaPositionThresholdPercent", "1"}, 
+            {"CheckPVCachedRotVelThresholdPercent", "10"}, 
+            {"LargeReplicatorSerializeRead3", "true"}, 
+            {"ReplicationFocusNouExtentsSizeCutoffForPauseStuds", "2147483647"}, 
+            {"NextGenReplicatorEnabledWrite4", "true"}, 
+            {"CheckPVDifferencesForInterpolationMinRotVelThresholdRadsPerSecHundredth", "1"}, 
+            {"GameNetDontSendRedundantDeltaPositionMillionth", "1"}, 
+            {"InterpolationFrameVelocityThresholdMillionth", "5"}, 
+            {"StreamJobNOUVolumeCap", "2147483647"}, 
+            {"InterpolationFrameRotVelocityThresholdMillionth", "5"}, 
+            {"WorldStepMax", "30"}, 
+            {"TimestepArbiterHumanoidLinearVelThreshold", "1"}, 
+            {"InterpolationFramePositionThresholdMillionth", "5"}, 
+            {"TimestepArbiterHumanoidTurningVelThreshold", "1"}, 
+            {"MaxTimestepMultiplierContstraint", "2147483647"}, 
+            {"GameNetPVHeaderLinearVelocityZeroCutoffExponent", "-5000"}, 
+            {"CheckPVCachedVelThresholdPercent", "10"}, 
+            {"TimestepArbiterOmegaThou", "1073741823"}, 
+            {"MaxAcceptableUpdateDelay", "1"}, 
+            {"LargeReplicatorSerializeWrite4", "true"}
+        }) do
+            pcall(function()
+                setfflag(v56[1], v56[2]);
+                v46[v56[1]] = v56[2];
+            end);
+        end;
+        return;
+    end;
+end;
+local function v60()
+    for v58, _ in pairs(v46) do
+        pcall(function()
+            setfflag(v58, "false");
+        end);
+    end;
+    v46 = {};
+end;
+local v61 = nil;
+local v62 = nil;
+local v63 = nil;
+local function v64()
+    if v61 then
+        return;
+    else
+        v61 = Instance.new("Part");
+        v61.Name = "ServerESP";
+        v61.Size = Vector3.new(3, 3, 3);
+        v61.Anchored = true;
+        v61.CanCollide = false;
+        v61.CanTouch = false;
+        v61.CanQuery = false;
+        v61.Material = Enum.Material.Neon;
+        v61.Color = Color3.fromRGB(255, 255, 255);
+        v61.Parent = workspace;
+        return;
+    end;
+end;
+local function _()
+    if v62 then
+        v62:Disconnect();
+        v62 = nil;
+    end;
+    if v61 then
+        v61:Destroy();
+        v61 = nil;
+    end;
+    v63 = nil;
+end;
+local function v69()
+    local l_Character_2 = l_LocalPlayer_1.Character;
+    if not l_Character_2 then
+        return;
+    else
+        local l_HumanoidRootPart_1 = l_Character_2:WaitForChild("HumanoidRootPart");
+        v64();
+        v63 = l_HumanoidRootPart_1.CFrame;
+        v61.CFrame = v63;
+        v62 = l_RunService_0.Heartbeat:Connect(function()
+            if not v45 then
+                return;
+            else
+                local l_CFrame_0 = l_HumanoidRootPart_1.CFrame;
+                if (l_CFrame_0.Position - v63.Position).Magnitude > SERVER_UPDATE_DISTANCE then
+                    v63 = l_CFrame_0;
+                    v61.CFrame = l_CFrame_0;
+                end;
+                return;
+            end;
+        end);
+        return;
+    end;
+end;
+l_TextButton_0.MouseButton1Click:Connect(function()
+    if v47 then
+        return;
+    else
+        v47 = true;
+        local l_Character_3 = l_LocalPlayer_1.Character;
+        if l_Character_3 then
+            local l_Humanoid_1 = l_Character_3:FindFirstChildWhichIsA("Humanoid");
+            if l_Humanoid_1 then
+                l_Humanoid_1.Health = 0;
+            end;
+        end;
+        l_TextLabel_1.Text = "🟡";
+        task.delay(0.5, function()
+            v53();
+            task.delay(4, function()
+                for v72, _ in pairs(v46) do
+                    pcall(function()
+                        setfflag(v72, "false");
+                    end);
+                end;
+                v46 = {};
+                l_TextLabel_1.Text = "🟢";
+                l_TextButton_0.Text = "Activated";
+            end);
+        end);
+        return;
+    end;
+end);
+l_TextButton_1.MouseButton1Click:Connect(function()
+    if l_TextLabel_1.Text ~= "🟢" then
+        return;
+    elseif v45 then
+        v60();
+        if v62 then
+            v62:Disconnect();
+            v62 = nil;
+        end;
+        if v61 then
+            v61:Destroy();
+            v61 = nil;
+        end;
+        v63 = nil;
+        l_TextLabel_2.Text = "🔴";
+        l_TextButton_1.Text = "Desync";
+        v45 = false;
+        return;
+    else
+        v57();
+        v69();
+        l_TextLabel_2.Text = "🟢";
+        l_TextButton_1.Text = "UnDesync";
+        v45 = true;
+        return;
+    end;
+end);
+local function v74()
+    if v45 then
+        v60();
+        l_TextLabel_2.Text = "🔴";
+        l_TextButton_1.Text = "Desync";
+        v45 = false;
+    end;
+end;
+l_LocalPlayer_1.OnTeleport:Connect(v74);
+l_LocalPlayer_1.AncestryChanged:Connect(function(_, v76)
+    if not v76 and v45 then
+        v60();
+        l_TextLabel_2.Text = "🔴";
+        l_TextButton_1.Text = "Desync";
+        v45 = false;
+    end;
+end);
+local v77 = false;
+local v78 = nil;
+local function v81()
+    local l_Character_4 = l_LocalPlayer_1.Character;
+    if not l_Character_4 then
+        return;
+    else
+        local l_Animate_0 = l_Character_4:FindFirstChild("Animate");
+        if v77 then
+            if v78 then
+                v78.Parent = l_Character_4;
+                v78 = nil;
+            end;
+            l_TextLabel_3.Text = "🔴";
+            v77 = false;
+            return;
+        else
+            if l_Animate_0 then
+                v78 = l_Animate_0:Clone();
+                l_Animate_0:Destroy();
+            end;
+            l_TextLabel_3.Text = "🟢";
+            v77 = true;
+            return;
+        end;
+    end;
+end;
+l_TextButton_2.MouseButton1Click:Connect(v81);
+l_LocalPlayer_1.CharacterAdded:Connect(function(v82)
+    if v77 then
+        local l_Animate_1 = v82:FindFirstChild("Animate");
+        if l_Animate_1 then
+            l_Animate_1:Destroy();
+        end;
+    end;
+end);
